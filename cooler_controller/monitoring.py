@@ -3,6 +3,18 @@ import time
 import datetime
 import os
 import requests
+import urllib
+
+farm_chat = "-227727734"
+
+def send_to_telegram(chat,message):
+	headers = {
+    "Origin": "http://scriptlab.net",
+    "Referer": "http://scriptlab.net/telegram/bots/relaybot/",
+    'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/70.0.3538.110 Safari/537.36'}
+	
+	url	= "http://scriptlab.net/telegram/bots/relaybot/relaylocked.php?chat="+chat+"&text="+urllib.parse.quote_plus(message)
+	requests.get(url,headers = headers)
 
 class Rig():
 	
@@ -33,26 +45,30 @@ class Rig():
 			self.enabled	= True
 			self.set_servo()
 		except:
-			print(datetime.datetime.now(), self.name, 'disabled. ERR: unable to get temperature by link:\n',self.url)
+			message = str(datetime.datetime.now())+' '+self.name+' disabled. ERR: unable to get temperature by link:\n'+self.url
+			print(message)
+			send_to_telegram(farm_chat,message)
 			self.temp		= 0
 			self.enabled	= False		
 
 	def get_temp(self):
-		self.temp	= float(requests.get(self.url).text)		
-		
+		self.temp	= float(requests.get(self.url).text)
+
 	def set_servo(self):
-		
+
 		self.servo.ChangeDutyCycle(self.servo_state)
 		print(datetime.datetime.now(), self.name, 'with temp', self.temp, ' coolers speed set to', self.servo_state)
 		time.sleep(2)
 		#self.servo.stop()
-		
+
 	def update(self):
 		if self.enabled:
 			try:
 				self.get_temp()
 			except:
-				print(datetime.datetime.now(), self.name, 'disabled. ERR: unable to get temperature by link:\n',self.url)
+				message = str(datetime.datetime.now())+' '+self.name+' disabled. ERR: unable to get temperature by link:\n'+self.url
+				print(message)
+				send_to_telegram(farm_chat,message)
 				self.enabled = False
 
 			if self.enabled:
@@ -79,6 +95,8 @@ GPIO.output(27, GPIO.LOW)
 rigs=[]
 rigs.append( Rig("Rig1",20,"http://192.168.1.11:8080/gpustate") )
 rigs.append( Rig("Rig2",21,"http://192.168.1.23:8080/gpustate") )
+
+send_to_telegram(farm_chat,str(datetime.datetime.now())+" farm cooler controller started")
 
 while(True):
 	rigs[0].update()
