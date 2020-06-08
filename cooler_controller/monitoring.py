@@ -25,8 +25,8 @@ class Rig():
 			name, 
 			channel, 
 			url,
-			treshold_bottom = 75, 
-			treshold_top = 76, 
+			treshold_bottom = 77, 
+			treshold_top = 78, 
 			servo_bottom = 0,
 			servo_top = 100,
 			servo_state = 30
@@ -34,7 +34,7 @@ class Rig():
 		self.name				= name
 		self.channel				= channel
 		self.url				= url
-		self.treshold_bottom	= treshold_bottom
+		self.treshold_bottom		= treshold_bottom
 		self.treshold_top		= treshold_top
 		self.servo_bottom		= servo_bottom
 		self.servo_top			= servo_top
@@ -42,17 +42,18 @@ class Rig():
 		#GPIO.setup(self.pin, GPIO.OUT)
 		kit.servo[channel].actuation_range = 100
 		#self.servo = GPIO.PWM(self.pin, 50) # GPIO for PWM with 50Hz
+		self.enabled			= True
 		try:
 			self.temp = self.get_temp()
 			#self.servo.start(2.5) # Initialization
-			self.enabled	= True
+			#self.enabled	= True
 			self.set_servo()
 		except Exception as e:
 			message = str(datetime.datetime.now())+' '+self.name+' disabled. ERR: unable to get temperature by link:\n'+self.url+'\n'+str(e)
 			print(message)
 			send_to_telegram(farm_chat,message)
 			self.temp		= 0
-			self.enabled	= False
+			#self.enabled	= False
 
 	def get_temp(self):
 		self.temp	= float(requests.get(self.url).text)
