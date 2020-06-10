@@ -25,7 +25,7 @@ class Rig():
 			name, 
 			channel, 
 			url,
-			treshold_bottom = 77, 
+			treshold_bottom = 76, 
 			treshold_top = 78, 
 			servo_bottom = 0,
 			servo_top = 100,
@@ -61,7 +61,7 @@ class Rig():
 	def set_servo(self):
 
 		#self.servo.ChangeDutyCycle(self.servo_state)
-		print(datetime.datetime.now(), self.name, 'with temp', self.temp, ' coolers speed set to', self.servo_state)
+		#print(datetime.datetime.now(), self.name, 'with temp', self.temp, ' coolers speed set to', self.servo_state)
 		kit.servo[self.channel].angle = self.servo_state
 		#time.sleep(2)
 		#self.servo.stop()
@@ -75,7 +75,7 @@ class Rig():
 				print(message)
 				send_to_telegram(farm_chat,message)
 				#self.enabled = False
-
+			print(self.name,self.temp)
 			if self.enabled:
 				if self.temp>self.treshold_top and self.servo_state<self.servo_top:
 					self.servo_state +=1
