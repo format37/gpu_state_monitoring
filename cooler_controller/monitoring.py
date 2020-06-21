@@ -27,7 +27,7 @@ class Rig():
 			url,
 			treshold_bottom = 76, 
 			treshold_top = 78, 
-			servo_bottom = 0,
+			servo_bottom = 10,
 			servo_top = 100,
 			servo_state = 30
 			):
