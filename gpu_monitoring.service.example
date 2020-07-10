@@ -1,0 +1,12 @@
+[Unit]
+Description=gpu monitoring
+
+[Service]
+Type=simple
+ExecStart=/usr/bin/env python3 /home/alex/projects/gpustate/gpu_state_monitoring/gpu_server/gpustate.py
+Restart=on-failure
+
+User=alex
+
+[Install]
+WantedBy=multi-user.target

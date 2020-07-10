@@ -1,4 +1,3 @@
-#!/usr/bin/env python3
 import GPUtil
 import asyncio
 from aiohttp import web
