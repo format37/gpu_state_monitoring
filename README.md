@@ -2,5 +2,5 @@
 Gpu farm temperature info, and rpi cooler servo controller. Python.  
   
 Gpu server side installation:  
-```pip3 install aiohttp --user```
-```python3 -m pip install GPUtil```
+```python3 -m pip install aiohttp   
+python3 -m pip install GPUtil```
